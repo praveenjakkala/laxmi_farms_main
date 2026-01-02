@@ -11,7 +11,7 @@ PRODUCTS:
 5. Desi Eggs - ₹120 for 12, ₹280 for 30
 
 DELIVERY: Same-day in Nalgonda, 1-2 days elsewhere. Free above ₹1000.
-CONTACT: +91 9885167159 | laxmifarms001@gmail.com
+CONTACT: +91 9885167159 | laxmifarms001@gmai.com
 ADDRESS: Pedda Banda, Nalgonda, Telangana - 508001
 
 Keep responses concise and helpful.`;

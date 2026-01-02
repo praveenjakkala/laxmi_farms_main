@@ -15,8 +15,8 @@ const contactInfo = [
     {
         icon: Mail,
         title: 'Email',
-        value: 'laxmifarms001@gmail.com',
-        link: 'mailto:laxmifarms001@gmail.com',
+        value: 'laxmifarms001@gmai.com',
+        link: 'mailto:laxmifarms001@gmai.com',
     },
     {
         icon: MapPin,
