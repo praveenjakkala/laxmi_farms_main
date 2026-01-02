@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Lock, User, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import Button from '@/components/ui/Button';
+import { createClient } from '@/lib/supabase-client';
 
 export default function AdminLoginPage() {
     const router = useRouter();
@@ -16,23 +17,27 @@ export default function AdminLoginPage() {
         password: '',
     });
 
+    const supabase = createClient();
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
         setIsLoading(true);
 
-        // Simple authentication check (in production, use Supabase Auth)
-        if (formData.username === 'praveen' && formData.password === '123456') {
-            // Set admin session (in production, use proper auth)
-            localStorage.setItem('admin_session', JSON.stringify({
-                user: formData.username,
-                authenticated: true,
-                timestamp: Date.now(),
-            }));
+        try {
+            const { data, error: authError } = await supabase.auth.signInWithPassword({
+                email: formData.username.includes('@') ? formData.username : `${formData.username}@laxmifarms.com`,
+                password: formData.password,
+            });
 
-            router.push('/admin/dashboard');
-        } else {
-            setError('Invalid username or password');
+            if (authError) throw authError;
+
+            if (data.user) {
+                router.push('/admin/dashboard');
+                router.refresh();
+            }
+        } catch (err: any) {
+            setError(err.message || 'Invalid username or password');
             setIsLoading(false);
         }
     };

@@ -15,6 +15,7 @@ import {
     X,
     Bell,
 } from 'lucide-react';
+import { createClient } from '@/lib/supabase-client';
 
 const navItems = [
     { icon: LayoutDashboard, label: 'Dashboard', href: '/admin/dashboard' },
@@ -33,24 +34,22 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     const pathname = usePathname();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const supabase = createClient();
 
     useEffect(() => {
-        // Check admin session
-        const session = localStorage.getItem('admin_session');
-        if (session) {
-            const sessionData = JSON.parse(session);
-            if (sessionData.authenticated) {
+        const checkAuth = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
                 setIsAuthenticated(true);
             } else {
                 router.push('/admin/login');
             }
-        } else {
-            router.push('/admin/login');
-        }
-    }, [router]);
+        };
+        checkAuth();
+    }, [router, supabase]);
 
-    const handleLogout = () => {
-        localStorage.removeItem('admin_session');
+    const handleLogout = async () => {
+        await supabase.auth.signOut();
         router.push('/admin/login');
     };
 
