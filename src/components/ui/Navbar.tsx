@@ -84,9 +84,9 @@ export default function Navbar() {
                                     className="object-cover w-full h-full"
                                 />
                             </div>
-                            <div className="hidden sm:block">
-                                <h1 className="text-xl font-heading font-bold text-primary-600">Laxmi Farms</h1>
-                                <p className="text-xs text-warm-600">Premium Country Chicken</p>
+                            <div className="flex flex-col">
+                                <h1 className="text-base sm:text-xl font-heading font-bold text-primary-600 leading-tight">Laxmi Farms</h1>
+                                <p className="text-[10px] sm:text-xs text-warm-600">Premium Country Chicken</p>
                             </div>
                         </Link>
 
