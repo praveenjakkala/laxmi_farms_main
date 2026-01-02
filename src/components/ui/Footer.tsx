@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Phone, Mail, MapPin, Instagram, MessageCircle, ExternalLink } from 'lucide-react';
 
 const quickLinks = [
@@ -35,8 +36,14 @@ export default function Footer() {
                     {/* Brand Column */}
                     <div className="col-span-2 sm:col-span-2 lg:col-span-1 space-y-4 sm:space-y-6">
                         <div className="flex items-center gap-2 sm:gap-3">
-                            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white flex items-center justify-center">
-                                <span className="text-primary-600 font-heading font-bold text-lg sm:text-xl">L</span>
+                            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-primary-400 flex items-center justify-center bg-white">
+                                <Image
+                                    src="/logo.jpg"
+                                    alt="Laxmi Farms Logo"
+                                    width={48}
+                                    height={48}
+                                    className="object-cover w-full h-full"
+                                />
                             </div>
                             <div>
                                 <h3 className="text-lg sm:text-xl font-heading font-bold">Laxmi Farms</h3>

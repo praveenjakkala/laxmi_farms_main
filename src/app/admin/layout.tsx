@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter, usePathname } from 'next/navigation';
 import {
     LayoutDashboard,
@@ -79,8 +80,14 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                 {/* Logo */}
                 <div className="p-6 border-b border-warm-200">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-primary-600 flex items-center justify-center">
-                            <span className="text-white font-heading font-bold">L</span>
+                        <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-100 flex items-center justify-center bg-white">
+                            <Image
+                                src="/logo.jpg"
+                                alt="Laxmi Farms Logo"
+                                width={40}
+                                height={40}
+                                className="object-cover w-full h-full"
+                            />
                         </div>
                         <div>
                             <h1 className="font-heading font-bold text-primary-600">Laxmi Farms</h1>

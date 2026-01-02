@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ShoppingCart, Phone, MapPin } from 'lucide-react';
@@ -74,8 +75,14 @@ export default function Navbar() {
                     <div className="flex items-center justify-between h-16 sm:h-20">
                         {/* Logo */}
                         <Link href="/" className="flex items-center gap-3">
-                            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary-600 flex items-center justify-center">
-                                <span className="text-white font-heading font-bold text-lg sm:text-xl">L</span>
+                            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-primary-100 flex items-center justify-center bg-white">
+                                <Image
+                                    src="/logo.jpg"
+                                    alt="Laxmi Farms Logo"
+                                    width={48}
+                                    height={48}
+                                    className="object-cover w-full h-full"
+                                />
                             </div>
                             <div className="hidden sm:block">
                                 <h1 className="text-xl font-heading font-bold text-primary-600">Laxmi Farms</h1>
@@ -151,8 +158,8 @@ export default function Navbar() {
                                         href={link.href}
                                         onClick={() => setIsMenuOpen(false)}
                                         className={`block py-3.5 px-4 rounded-xl transition-colors text-base ${pathname === link.href
-                                                ? 'bg-primary-50 text-primary-600 font-semibold'
-                                                : 'text-warm-700 hover:bg-warm-50'
+                                            ? 'bg-primary-50 text-primary-600 font-semibold'
+                                            : 'text-warm-700 hover:bg-warm-50'
                                             }`}
                                     >
                                         {link.label}
