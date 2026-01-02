@@ -69,10 +69,12 @@ export default function AdminLoginPage() {
                                 className="object-cover w-full h-full"
                             />
                         </div>
-                        <h1 className="text-2xl font-heading font-bold text-white whitespace-nowrap">
-                            Laxmi Farms
-                        </h1>
-                        <p className="text-primary-200 text-sm">Admin Portal</p>
+                        <div className="flex flex-col items-center">
+                            <span className="text-xl font-heading font-bold text-white whitespace-nowrap mb-1">
+                                Laxmi Farms
+                            </span>
+                            <p className="text-primary-100 text-[10px] uppercase tracking-widest font-bold opacity-80">Admin Portal</p>
+                        </div>
                     </div>
 
                     {/* Form */}
