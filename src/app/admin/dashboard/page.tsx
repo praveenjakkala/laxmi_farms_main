@@ -7,8 +7,6 @@ import {
     Package,
     Users,
     IndianRupee,
-    ArrowUpRight,
-    ArrowDownRight,
     Loader2
 } from 'lucide-react';
 import { createClient } from '@/lib/supabase-client';
@@ -20,7 +18,7 @@ export default function AdminDashboard() {
         { title: 'Products', value: '0', change: '0', isPositive: true, icon: Package, color: 'bg-purple-500' },
         { title: 'Customers', value: '0', change: '0%', isPositive: true, icon: Users, color: 'bg-orange-500' },
     ]);
-    const [recentOrders, setRecentOrders] = useState<any[]>([]);
+    const [recentOrders, setRecentOrders] = useState<{ id: string; customer: string; amount: number; status: string; date: string }[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const supabase = createClient();
@@ -75,6 +73,7 @@ export default function AdminDashboard() {
         };
 
         fetchData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const statusColors: Record<string, string> = {

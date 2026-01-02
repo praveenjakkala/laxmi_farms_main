@@ -1,13 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { Search, Eye, Download, Loader2 } from 'lucide-react';
 import { createClient } from '@/lib/supabase-client';
 import jsPDF from 'jspdf';
 
 export default function AdminOrdersPage() {
-    const [orders, setOrders] = useState<any[]>([]);
+    const [orders, setOrders] = useState<{ id: string; receipt?: string; amount: number; status: string; payment_status?: string; shipping_address?: { fullName?: string; phone?: string }; items?: { name: string; quantity: number; price: number }[]; created_at: string }[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
@@ -29,6 +28,7 @@ export default function AdminOrdersPage() {
 
     useEffect(() => {
         fetchOrders();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleStatusUpdate = async (orderId: string, newStatus: string) => {
@@ -46,7 +46,7 @@ export default function AdminOrdersPage() {
         }
     };
 
-    const generateInvoice = (order: any) => {
+    const generateInvoice = (order: { id: string; amount: number; payment_status?: string; shipping_address?: { fullName?: string; phone?: string }; items?: { name: string; quantity: number; price: number }[]; created_at: string }) => {
         const doc = new jsPDF();
 
         doc.setFontSize(20);
@@ -61,7 +61,7 @@ export default function AdminOrdersPage() {
         doc.text('Items:', 20, 90);
         let yPos = 100;
 
-        order.items?.forEach((item: any) => {
+        order.items?.forEach((item: { name: string; quantity: number; price: number }) => {
             doc.text(`- ${item.name} x ${item.quantity} = ₹${item.price * item.quantity}`, 25, yPos);
             yPos += 10;
         });

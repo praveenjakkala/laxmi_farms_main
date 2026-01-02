@@ -24,6 +24,7 @@ type PaymentMethod = 'upi' | 'razorpay' | 'cod';
 
 declare global {
     interface Window {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         Razorpay: any;
     }
 }
@@ -108,7 +109,7 @@ export default function CheckoutPage() {
                     name: 'Laxmi Farms',
                     description: 'Order Payment',
                     order_id: data.id,
-                    handler: async function (response: any) {
+                    handler: async function (response: { razorpay_payment_id: string; razorpay_order_id: string; razorpay_signature: string }) {
                         // On success, redirect to success page
                         // In a real app, you'd call an API to verify signature
                         console.log(response);

@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Search, Edit2, Trash2, Eye, Image as ImageIcon, Loader2 } from 'lucide-react';
+import { Plus, Search, Trash2, Loader2 } from 'lucide-react';
+import Image from 'next/image';
 import Button from '@/components/ui/Button';
 import { createClient } from '@/lib/supabase-client';
 
 export default function AdminProductsPage() {
-    const [products, setProducts] = useState<any[]>([]);
+    const [products, setProducts] = useState<{ id: string; name: string; category: string; price: number; stock: number; image_url?: string; unit?: string }[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const [showAddModal, setShowAddModal] = useState(false);
@@ -42,6 +43,7 @@ export default function AdminProductsPage() {
 
     useEffect(() => {
         fetchProducts();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleImageUpload = async (file: File) => {
@@ -188,7 +190,7 @@ export default function AdminProductsPage() {
                                             <div className="flex items-center gap-4">
                                                 <div className="w-12 h-12 rounded-xl bg-warm-100 flex items-center justify-center overflow-hidden">
                                                     {product.image_url ? (
-                                                        <img src={product.image_url} alt={product.name} className="w-full h-full object-cover" />
+                                                        <Image src={product.image_url} alt={product.name} width={48} height={48} className="w-full h-full object-cover" />
                                                     ) : (
                                                         <span className="text-2xl">🐔</span>
                                                     )}

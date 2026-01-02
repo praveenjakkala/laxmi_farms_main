@@ -65,6 +65,7 @@ export default function ShopPage() {
         };
 
         fetchProducts();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const filteredProducts = products.filter((product) => {
@@ -251,8 +252,8 @@ export default function ShopPage() {
                         ) : sortedProducts.length > 0 ? (
                             <div
                                 className={`grid gap-3 sm:gap-4 lg:gap-6 ${viewMode === 'grid'
-                                        ? 'grid-cols-2 sm:grid-cols-2 xl:grid-cols-3'
-                                        : 'grid-cols-1'
+                                    ? 'grid-cols-2 sm:grid-cols-2 xl:grid-cols-3'
+                                    : 'grid-cols-1'
                                     }`}
                             >
                                 {sortedProducts.map((product, index) => (

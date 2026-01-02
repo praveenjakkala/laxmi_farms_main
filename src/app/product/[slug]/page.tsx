@@ -112,9 +112,6 @@ export default function ProductDetailsPage() {
     }
 
     const categoryName = typeof product.category === 'string' ? product.category : product.category?.name;
-    const categorySlug = typeof product.category === 'string'
-        ? product.category.toLowerCase().replace(/ /g, '-') // Simple slugification for string categories
-        : product.category?.slug;
 
     return (
         <div className="min-h-screen bg-warm-50">
