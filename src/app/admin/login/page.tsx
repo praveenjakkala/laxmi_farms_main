@@ -27,7 +27,7 @@ export default function AdminLoginPage() {
 
         try {
             const { data, error: authError } = await supabase.auth.signInWithPassword({
-                email: formData.username.includes('@') ? formData.username : `${formData.username}@laxmifarms.com`,
+                email: formData.username.trim(),
                 password: formData.password,
             });
 
