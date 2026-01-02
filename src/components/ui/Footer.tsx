@@ -35,8 +35,8 @@ export default function Footer() {
                 <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
                     {/* Brand Column */}
                     <div className="col-span-2 sm:col-span-2 lg:col-span-1 space-y-4 sm:space-y-6">
-                        <div className="flex items-center gap-2 sm:gap-3">
-                            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-primary-400 flex items-center justify-center bg-white">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-primary-400 flex items-center justify-center bg-white shrink-0">
                                 <Image
                                     src="/logo.jpg"
                                     alt="Laxmi Farms Logo"
@@ -45,9 +45,9 @@ export default function Footer() {
                                     className="object-cover w-full h-full"
                                 />
                             </div>
-                            <div>
-                                <h3 className="text-lg sm:text-xl font-heading font-bold">Laxmi Farms</h3>
-                                <p className="text-primary-200 text-xs sm:text-sm">Premium Country Chicken</p>
+                            <div className="flex flex-col">
+                                <h3 className="text-base sm:text-xl font-heading font-bold text-white leading-tight">Laxmi Farms</h3>
+                                <p className="text-[10px] sm:text-xs text-primary-200">Premium Country Chicken</p>
                             </div>
                         </div>
                         <p className="text-primary-100 text-xs sm:text-sm leading-relaxed">
