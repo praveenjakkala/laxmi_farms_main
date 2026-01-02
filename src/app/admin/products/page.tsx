@@ -107,9 +107,9 @@ export default function AdminProductsPage() {
             });
             setImageFile(null);
             fetchProducts();
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error adding product:', error);
-            alert('Failed to add product');
+            alert(`Failed to add product: ${error.message || 'Unknown error'}`);
         } finally {
             setIsSubmitting(false);
         }
