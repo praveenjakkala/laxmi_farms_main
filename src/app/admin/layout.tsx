@@ -38,6 +38,12 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
     useEffect(() => {
         const checkAuth = async () => {
+            // Skip auth check for login page
+            if (pathname === '/admin/login') {
+                setIsAuthenticated(true);
+                return;
+            }
+
             const { data: { user } } = await supabase.auth.getUser();
             if (user) {
                 setIsAuthenticated(true);
@@ -46,7 +52,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             }
         };
         checkAuth();
-    }, [router, supabase]);
+    }, [router, supabase, pathname]);
 
     const handleLogout = async () => {
         await supabase.auth.signOut();

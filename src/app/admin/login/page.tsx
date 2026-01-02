@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { Lock, User, Eye, EyeOff, AlertCircle } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import { createClient } from '@/lib/supabase-client';
@@ -59,10 +60,16 @@ export default function AdminLoginPage() {
                 <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
                     {/* Header */}
                     <div className="bg-primary-600 px-8 py-6 text-center">
-                        <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-white flex items-center justify-center">
-                            <span className="text-primary-600 font-heading font-bold text-2xl">L</span>
+                        <div className="w-16 h-16 mx-auto mb-4 rounded-full overflow-hidden border-4 border-white/20 bg-white flex items-center justify-center">
+                            <Image
+                                src="/logo.jpg"
+                                alt="Laxmi Farms Logo"
+                                width={64}
+                                height={64}
+                                className="object-cover w-full h-full"
+                            />
                         </div>
-                        <h1 className="text-2xl font-heading font-bold text-white">
+                        <h1 className="text-2xl font-heading font-bold text-white whitespace-nowrap">
                             Laxmi Farms
                         </h1>
                         <p className="text-primary-200 text-sm">Admin Portal</p>
