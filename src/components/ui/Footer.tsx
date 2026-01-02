@@ -45,9 +45,9 @@ export default function Footer() {
                                     className="object-cover w-full h-full"
                                 />
                             </div>
-                            <div className="flex flex-col">
-                                <h3 className="text-base sm:text-xl font-heading font-bold text-white leading-tight">Laxmi Farms</h3>
-                                <p className="text-[10px] sm:text-xs text-primary-200">Premium Country Chicken</p>
+                            <div className="flex flex-col whitespace-nowrap">
+                                <span className="text-base sm:text-xl font-heading font-bold !text-white leading-tight">Laxmi Farms</span>
+                                <p className="text-[10px] sm:text-xs !text-primary-200">Premium Country Chicken</p>
                             </div>
                         </div>
                         <p className="text-primary-100 text-xs sm:text-sm leading-relaxed">

@@ -84,7 +84,7 @@ export default function Navbar() {
                                     className="object-cover w-full h-full"
                                 />
                             </div>
-                            <div className="flex flex-col">
+                            <div className="flex flex-col whitespace-nowrap">
                                 <h1 className="text-base sm:text-xl font-heading font-bold text-primary-600 leading-tight">Laxmi Farms</h1>
                                 <p className="text-[10px] sm:text-xs text-warm-600">Premium Country Chicken</p>
                             </div>
