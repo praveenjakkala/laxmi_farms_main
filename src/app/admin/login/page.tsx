@@ -107,7 +107,7 @@ export default function AdminLoginPage() {
                                         value={formData.username}
                                         onChange={(e) => setFormData({ ...formData, username: e.target.value })}
                                         className="input-field pl-12"
-                                        placeholder="Enter username"
+                                        placeholder="Enter admin email"
                                         autoComplete="username"
                                     />
                                 </div>
