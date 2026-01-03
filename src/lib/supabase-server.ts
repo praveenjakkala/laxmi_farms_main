@@ -72,9 +72,7 @@ export async function createAdminClient() {
     const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
     if (!supabaseUrl || !serviceRoleKey || serviceRoleKey === 'undefined') {
-        console.error('Admin client failed: SUPABASE_SERVICE_ROLE_KEY missing');
-        // Fallback to regular client or throw
-        return createServerSupabase();
+        throw new Error('SUPABASE_SERVICE_ROLE_KEY is missing in environment variables. Critical backend operations will fail.');
     }
 
     return createServerClient(

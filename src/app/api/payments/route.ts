@@ -80,9 +80,9 @@ export async function POST(request: NextRequest) {
             .single();
 
         if (dbError) {
-            console.error('Database Error:', dbError);
+            console.error('Order Insert Error details:', dbError);
             return NextResponse.json(
-                { error: 'Error creating order in database' },
+                { error: `Error: ${dbError.message || dbError.details || 'Unable to create order'}` },
                 { status: 500 }
             );
         }
