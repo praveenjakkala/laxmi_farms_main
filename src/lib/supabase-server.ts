@@ -61,3 +61,31 @@ export async function createServerSupabase() {
         }
     );
 }
+
+/**
+ * Creates a Supabase client with the Service Role key.
+ * This client bypasses RLS and should ONLY be used in server-side logic (API routes)
+ * for administrative tasks like stock deduction or updating order status.
+ */
+export async function createAdminClient() {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+    if (!supabaseUrl || !serviceRoleKey || serviceRoleKey === 'undefined') {
+        console.error('Admin client failed: SUPABASE_SERVICE_ROLE_KEY missing');
+        // Fallback to regular client or throw
+        return createServerSupabase();
+    }
+
+    return createServerClient(
+        supabaseUrl,
+        serviceRoleKey,
+        {
+            cookies: {
+                get() { return ''; },
+                set() { },
+                remove() { },
+            },
+        }
+    );
+}

@@ -6,7 +6,9 @@ export async function POST(request: NextRequest) {
     try {
         const { amount, products, address, paymentMethod, deliveryType } = await request.json();
 
-        const supabase = await createServerSupabase();
+        // Use Admin Client to bypass RLS for checkout process
+        const { createAdminClient } = await import('@/lib/supabase-server');
+        const supabase = await createAdminClient();
 
         // 1. Verify Stock Availability
         for (const item of products) {
@@ -17,12 +19,12 @@ export async function POST(request: NextRequest) {
                 .single();
 
             if (stockError || !product) {
-                return NextResponse.json({ error: `Product ${item.name} not found` }, { status: 400 });
+                return NextResponse.json({ error: `Product "${item.name}" not found` }, { status: 400 });
             }
 
             if (product.stock < item.quantity) {
                 return NextResponse.json({
-                    error: `Insufficient stock for ${product.name}. Available: ${product.stock}`
+                    error: `Only ${product.stock} units of "${product.name}" are available. Please reduce your quantity.`
                 }, { status: 400 });
             }
         }

@@ -58,6 +58,7 @@ export default function AdminDashboard() {
 
                 // Set Recent Orders (Top 5)
                 setRecentOrders(orders?.slice(0, 5).map(order => ({
+                    id: order.order_number || order.id.slice(0, 8),
                     customer: order.customer_name || 'Guest',
                     amount: order.total,
                     status: order.status,

@@ -4,10 +4,29 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { CheckCircle, Package, Phone, ArrowRight, Home } from 'lucide-react';
 import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { createClient } from '@/lib/supabase-client';
 
 export default function OrderSuccessPage() {
     const params = useParams();
     const orderId = params.id as string;
+    const [orderNumber, setOrderNumber] = useState<string>('');
+    const supabase = createClient();
+
+    useEffect(() => {
+        const fetchOrder = async () => {
+            const { data } = await supabase
+                .from('orders')
+                .select('order_number')
+                .eq('id', orderId)
+                .single();
+
+            if (data?.order_number) {
+                setOrderNumber(data.order_number);
+            }
+        };
+        fetchOrder();
+    }, [orderId, supabase]);
 
     return (
         <div className="min-h-screen bg-warm-50 flex items-center justify-center py-16">
@@ -43,13 +62,13 @@ export default function OrderSuccessPage() {
                 >
                     <div className="flex items-center justify-center gap-2 text-warm-500 mb-4">
                         <Package className="w-5 h-5" />
-                        <span>Order ID</span>
+                        <span>Order Number</span>
                     </div>
-                    <p className="text-2xl font-heading font-bold text-primary-600 mb-4">
-                        {orderId}
+                    <p className="text-2xl font-heading font-bold text-primary-600 mb-4 uppercase">
+                        {orderNumber || 'LF-...' || orderId.slice(0, 8)}
                     </p>
                     <p className="text-sm text-warm-500">
-                        Please save this order ID for future reference
+                        Please save this order number for future reference
                     </p>
                 </motion.div>
 
