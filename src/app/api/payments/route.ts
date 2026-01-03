@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
         // 4. Insert Order Items & Update Stock
         for (const item of products) {
             // Insert item
-            await supabase.from('order_items').insert({
+            const { error: itemError } = await supabase.from('order_items').insert({
                 order_id: dbOrder.id,
                 product_id: item.product_id,
                 product_name: item.name,
@@ -98,6 +98,11 @@ export async function POST(request: NextRequest) {
                 unit_price: item.unit_price,
                 total_price: item.total_price
             });
+
+            if (itemError) {
+                console.error('Order Item Insert Error:', itemError);
+                throw new Error(`Failed to save order item: ${itemError.message}`);
+            }
 
             // Update stock
             const { data: currentProduct } = await supabase
@@ -108,7 +113,7 @@ export async function POST(request: NextRequest) {
 
             if (currentProduct) {
                 const newStock = Math.max(0, currentProduct.stock - item.quantity);
-                await supabase
+                const { error: updateError } = await supabase
                     .from('products')
                     .update({
                         stock: newStock,
@@ -116,6 +121,12 @@ export async function POST(request: NextRequest) {
                         is_available: newStock > 0
                     })
                     .eq('id', item.product_id);
+
+                if (updateError) {
+                    console.error('Stock Update Error:', updateError);
+                    // We don't necessarily want to fail the whole order if stock update fails, 
+                    // but we should log it. Or maybe we do? Let's log it for now.
+                }
             }
         }
 
@@ -126,10 +137,10 @@ export async function POST(request: NextRequest) {
             currency: 'INR'
         });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error('Payment API Error:', error);
         return NextResponse.json(
-            { error: 'Error processing request' },
+            { error: error.message || 'Error processing request' },
             { status: 500 }
         );
     }
