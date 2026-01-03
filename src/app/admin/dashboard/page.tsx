@@ -35,7 +35,7 @@ export default function AdminDashboard() {
                 if (ordersError) throw ordersError;
 
                 // Calculate Stats
-                const totalRevenue = orders?.reduce((sum, order) => sum + (order.amount || 0), 0) || 0;
+                const totalRevenue = orders?.reduce((sum, order) => sum + (parseFloat(order.total) || 0), 0) || 0;
                 const totalOrders = orders?.length || 0;
 
                 // Fetch Products Count
@@ -58,9 +58,8 @@ export default function AdminDashboard() {
 
                 // Set Recent Orders (Top 5)
                 setRecentOrders(orders?.slice(0, 5).map(order => ({
-                    id: order.receipt || order.id.slice(0, 8), // Use receipt or truncated ID
-                    customer: order.shipping_address?.fullName || 'Guest',
-                    amount: order.amount,
+                    customer: order.customer_name || 'Guest',
+                    amount: order.total,
                     status: order.status,
                     date: new Date(order.created_at).toLocaleDateString()
                 })) || []);
@@ -146,7 +145,7 @@ export default function AdminDashboard() {
                                         <tr key={order.id} className="hover:bg-warm-50 transition-colors">
                                             <td className="px-6 py-4 text-sm font-medium text-primary-600">{order.id}</td>
                                             <td className="px-6 py-4 text-sm text-warm-700">{order.customer}</td>
-                                            <td className="px-6 py-4 text-sm font-medium text-warm-900">₹{order.amount}</td>
+                                            <td className="px-6 py-4 text-sm font-medium text-warm-900">₹{order.amount?.toLocaleString('en-IN')}</td>
                                             <td className="px-6 py-4">
                                                 <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${statusColors[order.status] || 'bg-gray-100 text-gray-800'}`}>
                                                     {order.status ? (order.status.charAt(0).toUpperCase() + order.status.slice(1)) : 'Unknown'}

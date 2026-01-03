@@ -30,6 +30,8 @@ export interface Product {
     tags: string[];
     created_at: string;
     updated_at: string;
+    status?: 'active' | 'out_of_stock' | 'draft';
+    unit?: string;
     // Joined fields
     category?: Category | string;
 }

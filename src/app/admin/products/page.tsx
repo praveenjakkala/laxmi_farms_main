@@ -90,7 +90,8 @@ export default function AdminProductsPage() {
                     description: newProduct.description,
                     unit: newProduct.unit,
                     image_url: imageUrl,
-                    status: parseInt(newProduct.stock) > 0 ? 'active' : 'out_of_stock'
+                    status: parseInt(newProduct.stock) > 0 ? 'active' : 'out_of_stock',
+                    is_available: parseInt(newProduct.stock) > 0
                 });
 
             if (error) throw error;

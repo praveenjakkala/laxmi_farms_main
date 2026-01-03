@@ -6,7 +6,7 @@ import { createClient } from '@/lib/supabase-client';
 import jsPDF from 'jspdf';
 
 export default function AdminOrdersPage() {
-    const [orders, setOrders] = useState<{ id: string; receipt?: string; amount: number; status: string; payment_status?: string; shipping_address?: { fullName?: string; phone?: string }; items?: { name: string; quantity: number; price: number }[]; created_at: string }[]>([]);
+    const [orders, setOrders] = useState<{ id: string; order_number?: string; total: number; status: string; payment_status?: string; customer_name?: string; customer_phone?: string; order_items?: any[]; created_at: string }[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
@@ -17,7 +17,7 @@ export default function AdminOrdersPage() {
         setIsLoading(true);
         const { data, error } = await supabase
             .from('orders')
-            .select('*')
+            .select('*, order_items(*)')
             .order('created_at', { ascending: false });
 
         if (!error && data) {
@@ -46,36 +46,36 @@ export default function AdminOrdersPage() {
         }
     };
 
-    const generateInvoice = (order: { id: string; amount: number; payment_status?: string; shipping_address?: { fullName?: string; phone?: string }; items?: { name: string; quantity: number; price: number }[]; created_at: string }) => {
+    const generateInvoice = (order: any) => {
         const doc = new jsPDF();
 
         doc.setFontSize(20);
         doc.text('Laxmi Farms - Invoice', 20, 20);
 
         doc.setFontSize(12);
-        doc.text(`Order ID: ${order.id}`, 20, 40);
+        doc.text(`Order ID: ${order.order_number || order.id}`, 20, 40);
         doc.text(`Date: ${new Date(order.created_at).toLocaleString()}`, 20, 50);
-        doc.text(`Customer: ${order.shipping_address?.fullName || 'Guest'}`, 20, 60);
-        doc.text(`Phone: ${order.shipping_address?.phone || 'N/A'}`, 20, 70);
+        doc.text(`Customer: ${order.customer_name || 'Guest'}`, 20, 60);
+        doc.text(`Phone: ${order.customer_phone || 'N/A'}`, 20, 70);
 
         doc.text('Items:', 20, 90);
         let yPos = 100;
 
-        order.items?.forEach((item: { name: string; quantity: number; price: number }) => {
-            doc.text(`- ${item.name} x ${item.quantity} = ₹${item.price * item.quantity}`, 25, yPos);
+        order.order_items?.forEach((item: any) => {
+            doc.text(`- ${item.product_name} x ${item.quantity} = ₹${item.total_price}`, 25, yPos);
             yPos += 10;
         });
 
-        doc.text(`Total Amount: ₹${order.amount}`, 20, yPos + 20);
+        doc.text(`Total Amount: ₹${order.total}`, 20, yPos + 20);
         doc.text(`Payment Status: ${order.payment_status || 'Paid'}`, 20, yPos + 30);
 
-        doc.save(`invoice_${order.id}.pdf`);
+        doc.save(`invoice_${order.order_number || order.id}.pdf`);
     };
 
     const filteredOrders = orders.filter((order) => {
-        const customerName = order.shipping_address?.fullName || '';
+        const customerName = order.customer_name || '';
         const matchesSearch =
-            order.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            (order.order_number || order.id).toLowerCase().includes(searchQuery.toLowerCase()) ||
             customerName.toLowerCase().includes(searchQuery.toLowerCase());
         const matchesStatus = !statusFilter || order.status === statusFilter;
         return matchesSearch && matchesStatus;
@@ -175,17 +175,17 @@ export default function AdminOrdersPage() {
                                     <tr key={order.id} className="hover:bg-warm-50 transition-colors">
                                         <td className="px-6 py-4">
                                             <span className="font-medium text-primary-600" title={order.id}>
-                                                {order.receipt || order.id.slice(0, 8)}..
+                                                {order.order_number || order.id.slice(0, 8)}
                                             </span>
                                         </td>
                                         <td className="px-6 py-4">
-                                            <p className="font-medium text-warm-900">{order.shipping_address?.fullName || 'Guest'}</p>
-                                            <p className="text-sm text-warm-500">{order.shipping_address?.phone || '-'}</p>
+                                            <p className="font-medium text-warm-900">{order.customer_name || 'Guest'}</p>
+                                            <p className="text-sm text-warm-500">{order.customer_phone || '-'}</p>
                                         </td>
                                         <td className="px-6 py-4 text-sm text-warm-600">
-                                            {order.items?.length || 0} items
+                                            {order.order_items?.length || 0} items
                                         </td>
-                                        <td className="px-6 py-4 font-medium text-warm-900">₹{order.amount}</td>
+                                        <td className="px-6 py-4 font-medium text-warm-900">₹{order.total?.toLocaleString('en-IN')}</td>
                                         <td className="px-6 py-4">
                                             <select
                                                 value={order.status}
