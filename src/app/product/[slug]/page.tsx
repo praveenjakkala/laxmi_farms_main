@@ -39,6 +39,8 @@ export default function ProductDetailsPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [quantity, setQuantity] = useState(1);
     const [selectedImage, setSelectedImage] = useState(0);
+    const [pricingModel, setPricingModel] = useState<'live' | 'meat'>('live');
+    const [price, setPrice] = useState(0);
 
     const supabase = createClient();
 
@@ -70,6 +72,7 @@ export default function ProductDetailsPage() {
                     ...data,
                     image_url: data.image_url || localImage
                 });
+                setPrice(data.price);
             }
             setIsLoading(false);
         };
@@ -226,84 +229,104 @@ export default function ProductDetailsPage() {
                             <span className="text-warm-600">(50+ Reviews)</span>
                         </div>
 
-                        {/* Price */}
-                        <div className="flex items-baseline gap-4 mb-6">
-                            <span className="text-3xl font-heading font-bold text-primary-600">
-                                {formatPrice(product.price)}
-                                <span className="text-lg font-normal text-warm-500">
-                                    /{product.pricing_model === 'per_kg' ? 'kg' : product.pricing_model === 'per_bird' ? 'bird' : ''}
-                                </span>
-                            </span>
-                            {product.compare_price && product.compare_price > product.price && (
-                                <span className="text-lg text-warm-400 line-through">
-                                    {formatPrice(product.compare_price)}
-                                </span>
-                            )}
-                            {product.compare_price && product.compare_price > product.price && (
-                                <span className="badge bg-natural-green text-white">
-                                    {Math.round((1 - product.price / product.compare_price) * 100)}% OFF
-                                </span>
-                            )}
-                        </div>
+                        {/* Mock Subtitle - In real app, this comes from DB */}
+                        <p className="text-secondary-500 font-medium mb-1">Soft, Tender and Extra juicy</p>
+                        <p className="text-warm-500 text-sm mb-4">Age: 75-90 Days</p>
 
-                        {/* Short Description */}
-                        <p className="text-warm-600 mb-6">
-                            {product.short_description}
-                        </p>
-
-                        {/* Features */}
-                        <div className="flex flex-wrap gap-4 mb-8">
-                            {features.map((feature, index) => (
-                                <div key={index} className="flex items-center gap-2 text-warm-700">
-                                    <feature.icon className="w-5 h-5 text-natural-green" />
-                                    <span className="text-sm">{feature.text}</span>
+                        {/* Selection Logic */}
+                        <div className="flex flex-col gap-4 mb-8">
+                            {/* Live Bird Option */}
+                            <div
+                                onClick={() => {
+                                    setPricingModel('live');
+                                    setPrice(product.price);
+                                }}
+                                className={`cursor-pointer border-2 rounded-xl p-0 flex overflow-hidden transition-all ${pricingModel === 'live' ? 'border-primary-600 bg-primary-50/10' : 'border-warm-200 hover:border-warm-300'
+                                    }`}
+                            >
+                                <div className="w-1/3 p-4 flex items-center justify-center font-bold text-warm-800 border-r border-warm-200">
+                                    LIVE BIRD
                                 </div>
-                            ))}
-                        </div>
-
-                        {/* Quantity & Add to Cart */}
-                        <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                            {/* Quantity Selector */}
-                            <div className="flex items-center bg-warm-100 rounded-xl">
-                                <button
-                                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                                    className="p-4 hover:bg-warm-200 rounded-l-xl transition-colors"
-                                    aria-label="Decrease quantity"
-                                >
-                                    <Minus className="w-5 h-5" />
-                                </button>
-                                <span className="px-6 text-lg font-semibold min-w-[60px] text-center">
-                                    {quantity}
-                                </span>
-                                <button
-                                    onClick={() => setQuantity(quantity + 1)}
-                                    className="p-4 hover:bg-warm-200 rounded-r-xl transition-colors"
-                                    aria-label="Increase quantity"
-                                >
-                                    <Plus className="w-5 h-5" />
-                                </button>
+                                <div className="w-1/3 p-4 flex items-center justify-center font-bold text-xl text-primary-700 border-r border-warm-200">
+                                    {formatPrice(product.price)}<span className="text-sm font-normal text-warm-500 ml-1">/KG</span>
+                                </div>
+                                <div className="w-1/3 p-4 flex items-center justify-center text-xs text-center text-warm-600 bg-warm-50">
+                                    Live bird is available only in stores.
+                                </div>
                             </div>
 
-                            {/* Add to Cart */}
+                            {/* Meat Option */}
+                            <div
+                                onClick={() => {
+                                    setPricingModel('meat');
+                                    // Mocking meat price logic: usually higher per bird/kg after cleaning
+                                    // For demo, we are showing a fixed price based on user mockup
+                                    setPrice(369);
+                                }}
+                                className={`cursor-pointer border-2 rounded-xl p-0 flex overflow-hidden transition-all ${pricingModel === 'meat' ? 'border-primary-600 bg-red-50' : 'border-warm-200 hover:border-warm-300'
+                                    }`}
+                            >
+                                <div className="w-1/3 p-4 flex items-center justify-center font-bold text-warm-800 border-r border-warm-200 bg-red-100/50">
+                                    MEAT
+                                </div>
+                                <div className="w-1/3 p-4 flex items-center justify-center font-bold text-xl text-primary-700 border-r border-warm-200 bg-red-100/50">
+                                    ₹369
+                                </div>
+                                <div className="w-1/3 p-4 flex flex-col items-center justify-center text-xs text-center text-warm-700 bg-red-200/50">
+                                    <div className='font-medium'>Gross wt: 1900gm</div>
+                                    <div>Net wt: 950gm</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Add to Bag CTA */}
+                        <div className="mb-8">
                             <Button
                                 onClick={handleAddToCart}
-                                disabled={!product.is_available || (product.stock_quantity !== undefined && product.stock_quantity <= 0)}
-                                className="flex-1"
-                                leftIcon={<ShoppingCart className="w-5 h-5" />}
+                                disabled={!product.is_available}
+                                className="w-48 bg-[#9B2C2C] hover:bg-[#7B2323] text-white font-medium py-3 rounded-lg shadow-md transition-transform active:scale-95"
                             >
-                                {product.is_available ? 'Add to Cart' : 'Out of Stock'}
+                                Add to bag & Customize
                             </Button>
                         </div>
 
-                        {/* Stock Status */}
-                        {product.is_available ? (
-                            <div className="flex items-center gap-2 text-natural-green mb-8">
-                                <Check className="w-5 h-5" />
-                                <span>In Stock - Ready for delivery</span>
+                        {/* Why Better Section */}
+                        <div className="mt-8 mb-8 p-6 bg-[#FFF8E7] rounded-xl border border-[#FFE4C4]">
+                            <h3 className="text-xl font-heading font-bold text-warm-800 mb-4 flex items-center gap-2">
+                                Why <span className="text-[#9B2C2C]">BETTER THAN BROILER?</span>
+                            </h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-5 h-5 bg-natural-green rounded-sm flex items-center justify-center shrink-0">
+                                        <Check className="w-3 h-3 text-white" />
+                                    </div>
+                                    <span className="text-warm-700 text-sm font-medium">Natural growth (75-90 Days)</span>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <div className="w-5 h-5 bg-natural-green rounded-sm flex items-center justify-center shrink-0">
+                                        <Check className="w-3 h-3 text-white" />
+                                    </div>
+                                    <span className="text-warm-700 text-sm font-medium">Naturally grown in lush-green free-range farms</span>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <div className="w-5 h-5 bg-natural-green rounded-sm flex items-center justify-center shrink-0">
+                                        <Check className="w-3 h-3 text-white" />
+                                    </div>
+                                    <span className="text-warm-700 text-sm font-medium">Naturally soft, juicy & tender</span>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <div className="w-5 h-5 bg-natural-green rounded-sm flex items-center justify-center shrink-0">
+                                        <Check className="w-3 h-3 text-white" />
+                                    </div>
+                                    <span className="text-warm-700 text-sm font-medium">No injected Steroids, Hormones</span>
+                                </div>
                             </div>
-                        ) : (
-                            <div className="text-red-500 mb-8">Currently out of stock</div>
-                        )}
+
+                            {/* Decorative Illustration (Placeholder for the farm sketch in mockup) */}
+                            <div className="mt-4 flex justify-end">
+                                <Leaf className="w-12 h-12 text-warm-300 opacity-50" />
+                            </div>
+                        </div>
 
                         {/* Secondary Actions */}
                         <div className="flex gap-4 pb-8 border-b border-warm-200">
