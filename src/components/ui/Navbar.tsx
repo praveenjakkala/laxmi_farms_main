@@ -25,10 +25,10 @@ export default function Navbar() {
         { label: 'Login', href: '/login' },
     ];
 
-    // Conditionally add Admin link
-    if (appMode !== 'customer') {
-        navLinks.push({ label: 'Admin', href: '/admin' });
-    }
+    // Conditionally add Admin link (DEBUG: Always showing for now)
+    // if (appMode !== 'customer') {
+    navLinks.push({ label: 'Admin', href: '/admin' });
+    // }
     const [isScrolled, setIsScrolled] = useState(false);
     const pathname = usePathname();
     const { getTotalItems, openCart } = useCart();
