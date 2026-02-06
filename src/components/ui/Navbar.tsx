@@ -13,8 +13,7 @@ import { useCart } from '@/lib/cart';
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    // Dynamic Navigation Links
-    const appMode = process.env.NEXT_PUBLIC_APP_MODE;
+    // Navigation Links
     const navLinks = [
         { label: 'Home', href: '/' },
         { label: 'Shop', href: '/shop' },
@@ -23,12 +22,8 @@ export default function Navbar() {
         { label: 'Contact', href: '/contact' },
         { label: 'FAQ', href: '/faq' },
         { label: 'Login', href: '/login' },
+        { label: 'Admin', href: '/admin' },
     ];
-
-    // Conditionally add Admin link (DEBUG: Always showing for now)
-    // if (appMode !== 'customer') {
-    navLinks.push({ label: 'Admin', href: '/admin' });
-    // }
     const [isScrolled, setIsScrolled] = useState(false);
     const pathname = usePathname();
     const { getTotalItems, openCart } = useCart();
