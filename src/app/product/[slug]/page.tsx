@@ -82,7 +82,7 @@ export default function ProductDetailsPage() {
 
     const handleAddToCart = () => {
         if (product) {
-            addItem(product, quantity);
+            addItem(product, quantity, pricingModel, price);
             openCart();
         }
     };

@@ -9,7 +9,7 @@ interface CartStore {
     isOpen: boolean;
 
     // Actions
-    addItem: (product: Product, quantity?: number, weightOption?: string) => void;
+    addItem: (product: Product, quantity?: number, weightOption?: string, customPrice?: number) => void;
     removeItem: (productId: string) => void;
     updateQuantity: (productId: string, quantity: number) => void;
     clearCart: () => void;
@@ -28,7 +28,7 @@ export const useCart = create<CartStore>()(
             items: [],
             isOpen: false,
 
-            addItem: (product, quantity = 1, weightOption) => {
+            addItem: (product, quantity = 1, weightOption, customPrice) => {
                 const items = get().items;
                 const existingIndex = items.findIndex(
                     (item) => item.product.id === product.id && item.weight_option === weightOption
@@ -46,7 +46,7 @@ export const useCart = create<CartStore>()(
                                 product,
                                 quantity,
                                 weight_option: weightOption,
-                                unit_price: product.price,
+                                unit_price: customPrice || product.price,
                             },
                         ],
                     });
