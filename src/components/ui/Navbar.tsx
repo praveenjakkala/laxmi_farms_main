@@ -18,6 +18,11 @@ const navLinks = [
     { label: 'Login', href: '/login' },
 ];
 
+// Conditionally add Admin link
+if (process.env.NEXT_PUBLIC_APP_MODE !== 'customer') {
+    navLinks.push({ label: 'Admin', href: '/admin' });
+}
+
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
