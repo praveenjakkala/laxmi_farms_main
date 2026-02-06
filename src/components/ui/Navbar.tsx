@@ -8,23 +8,27 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, ShoppingCart, Phone, MapPin } from 'lucide-react';
 import { useCart } from '@/lib/cart';
 
-const navLinks = [
-    { label: 'Home', href: '/' },
-    { label: 'Shop', href: '/shop' },
-    { label: 'About Us', href: '/about' },
-    { label: 'Our Farms', href: '/farms' },
-    { label: 'Contact', href: '/contact' },
-    { label: 'FAQ', href: '/faq' },
-    { label: 'Login', href: '/login' },
-];
-
-// Conditionally add Admin link
-if (process.env.NEXT_PUBLIC_APP_MODE !== 'customer') {
-    navLinks.push({ label: 'Admin', href: '/admin' });
-}
+// Nav links moved inside component for dynamic evaluation
 
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    // Dynamic Navigation Links
+    const appMode = process.env.NEXT_PUBLIC_APP_MODE;
+    const navLinks = [
+        { label: 'Home', href: '/' },
+        { label: 'Shop', href: '/shop' },
+        { label: 'About Us', href: '/about' },
+        { label: 'Our Farms', href: '/farms' },
+        { label: 'Contact', href: '/contact' },
+        { label: 'FAQ', href: '/faq' },
+        { label: 'Login', href: '/login' },
+    ];
+
+    // Conditionally add Admin link
+    if (appMode !== 'customer') {
+        navLinks.push({ label: 'Admin', href: '/admin' });
+    }
     const [isScrolled, setIsScrolled] = useState(false);
     const pathname = usePathname();
     const { getTotalItems, openCart } = useCart();
