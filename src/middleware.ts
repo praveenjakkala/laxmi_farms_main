@@ -45,18 +45,6 @@ export async function middleware(request: NextRequest) {
         data: { user },
     } = await supabase.auth.getUser();
 
-    const appMode = process.env.NEXT_PUBLIC_APP_MODE || 'universal';
-
-    // 1. Customer Mode Limitation: Block ALL access to /admin
-    if (appMode === 'customer' && request.nextUrl.pathname.startsWith('/admin')) {
-        return NextResponse.redirect(new URL('/', request.url));
-    }
-
-    // 2. Admin Mode Enhancement: Redirect root to dashboard
-    if (appMode === 'admin' && request.nextUrl.pathname === '/') {
-        return NextResponse.redirect(new URL('/admin/dashboard', request.url));
-    }
-
     // Protect Admin Routes (Security Layer)
     if (request.nextUrl.pathname.startsWith('/admin')) {
         // Public admin routes (login)
