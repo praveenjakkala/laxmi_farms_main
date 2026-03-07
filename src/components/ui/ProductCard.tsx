@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Plus, Eye } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { Product } from '@/types';
 import { useCart } from '@/lib/cart';
 
@@ -29,16 +29,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
         }).format(price);
     };
 
-    const getPricingLabel = (model: string) => {
-        switch (model) {
-            case 'per_kg':
-                return '/kg';
-            case 'per_bird':
-                return '/bird';
-            default:
-                return '';
-        }
-    };
+
 
     return (
         <motion.div

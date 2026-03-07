@@ -6,13 +6,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import {
-    Minus,
-    Plus,
-    ShoppingCart,
     Heart,
     Share2,
     Truck,
-    Shield,
     Leaf,
     Star,
     Check,
@@ -23,11 +19,7 @@ import Button from '@/components/ui/Button';
 import { Product } from '@/types';
 import { createClient } from '@/lib/supabase-client';
 
-const features = [
-    { icon: Leaf, text: '100% Natural' },
-    { icon: Shield, text: 'Quality Assured' },
-    { icon: Truck, text: 'Fresh Delivery' },
-];
+
 
 export default function ProductDetailsPage() {
     const { addItem, openCart } = useCart();
@@ -37,7 +29,7 @@ export default function ProductDetailsPage() {
 
     const [product, setProduct] = useState<Product | null>(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [quantity, setQuantity] = useState(1);
+    const [quantity] = useState(1);
     const [selectedImage, setSelectedImage] = useState(0);
     const [pricingModel, setPricingModel] = useState<'live' | 'meat'>('live');
     const [price, setPrice] = useState(0);

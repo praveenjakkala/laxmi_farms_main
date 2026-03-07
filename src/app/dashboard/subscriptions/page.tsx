@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { RefreshCcw, Check, Pause, X, Calendar, Package, ChevronRight, Sparkles } from 'lucide-react';
+import { RefreshCcw, Check, Pause, X, ChevronRight, Sparkles } from 'lucide-react';
 import { createClient } from '@/lib/supabase-client';
 import type { Subscription, SubscriptionPlan } from '@/types';
 

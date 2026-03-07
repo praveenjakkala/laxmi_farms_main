@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -9,7 +10,6 @@ import {
     IndianRupee,
     Package,
     ArrowUpRight,
-    ArrowDownRight,
     Calendar,
     Star,
     RefreshCcw,
@@ -50,15 +50,15 @@ export default function AdminAnalyticsPage() {
                     supabase.from('order_items').select('product_id, quantity, total_price, product_name'),
                 ]);
 
-                const orders = ordersRes.data || [];
-                const subs = subsRes.data || [];
-                const reviews = reviewsRes.data || [];
-                const items = orderItemsRes.data || [];
+                const orders: any[] = ordersRes.data || [];
+                const subs: any[] = subsRes.data || [];
+                const reviews: any[] = reviewsRes.data || [];
+                const items: any[] = orderItemsRes.data || [];
 
                 // Stats
-                const totalRevenue = orders.reduce((s, o) => s + Number(o.total), 0);
-                const uniqueCustomers = new Set(orders.filter(o => o.user_id).map(o => o.user_id)).size;
-                const avgRating = reviews.length > 0 ? reviews.reduce((s, r) => s + r.rating, 0) / reviews.length : 0;
+                const totalRevenue = orders.reduce((s: number, o: any) => s + Number(o.total), 0);
+                const uniqueCustomers = new Set(orders.filter((o: any) => o.user_id).map((o: any) => o.user_id)).size;
+                const avgRating = reviews.length > 0 ? reviews.reduce((s: number, r: any) => s + r.rating, 0) / reviews.length : 0;
 
                 setStats({
                     totalRevenue,
@@ -77,7 +77,7 @@ export default function AdminAnalyticsPage() {
                     return d.toISOString().split('T')[0];
                 });
 
-                const dailyMap = orders.reduce<Record<string, DailySale>>((acc, order) => {
+                const dailyMap = orders.reduce<Record<string, DailySale>>((acc: Record<string, DailySale>, order: any) => {
                     const date = order.created_at.split('T')[0];
                     if (!acc[date]) acc[date] = { date, revenue: 0, orders: 0 };
                     acc[date].revenue += Number(order.total);
@@ -88,7 +88,7 @@ export default function AdminAnalyticsPage() {
                 setDailySales(last14.map(date => dailyMap[date] || { date, revenue: 0, orders: 0 }));
 
                 // Top products
-                const productMap = items.reduce<Record<string, TopProduct>>((acc, item) => {
+                const productMap = items.reduce<Record<string, TopProduct>>((acc: Record<string, TopProduct>, item: any) => {
                     const key = item.product_name || item.product_id;
                     if (!acc[key]) acc[key] = { name: key, count: 0, revenue: 0 };
                     acc[key].count += item.quantity;
@@ -97,7 +97,7 @@ export default function AdminAnalyticsPage() {
                 }, {});
 
                 setTopProducts(
-                    Object.values(productMap)
+                    (Object.values(productMap) as TopProduct[])
                         .sort((a, b) => b.revenue - a.revenue)
                         .slice(0, 5)
                 );
