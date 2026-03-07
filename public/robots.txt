@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Block admin pages from indexing
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /api/
+Disallow: /checkout/
+Disallow: /order-success/
+
+Sitemap: https://laxmifarms.in/sitemap.xml

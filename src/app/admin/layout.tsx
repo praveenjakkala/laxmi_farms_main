@@ -14,6 +14,7 @@ import {
     Menu,
     X,
     Bell,
+    BarChart3,
 } from 'lucide-react';
 import { createClient } from '@/lib/supabase-client';
 
@@ -22,6 +23,7 @@ const navItems = [
     { icon: Package, label: 'Products', href: '/admin/products' },
     { icon: Tags, label: 'Categories', href: '/admin/categories' },
     { icon: ShoppingCart, label: 'Orders', href: '/admin/orders' },
+    { icon: BarChart3, label: 'Analytics', href: '/admin/analytics' },
     { icon: Settings, label: 'Settings', href: '/admin/settings' },
 ];
 

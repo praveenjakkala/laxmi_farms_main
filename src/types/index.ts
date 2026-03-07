@@ -1,4 +1,4 @@
-// Database Types for Supabase
+// Database Types for Supabase - Laxmi Farms v2
 
 export interface Category {
     id: string;
@@ -23,6 +23,8 @@ export interface Product {
     weight_options: WeightOption[] | null;
     min_order_quantity: number;
     stock_quantity: number;
+    reserved_stock: number;
+    low_stock_threshold: number;
     image_url?: string;
     images: string[];
     is_available: boolean;
@@ -34,6 +36,8 @@ export interface Product {
     unit?: string;
     // Joined fields
     category?: Category | string;
+    average_rating?: number;
+    review_count?: number;
 }
 
 export interface WeightOption {
@@ -45,6 +49,7 @@ export interface WeightOption {
 export interface Order {
     id: string;
     order_number: string;
+    user_id: string | null;
     customer_name: string;
     customer_phone: string;
     customer_email: string | null;
@@ -57,6 +62,9 @@ export interface Order {
     payment_method: string;
     payment_status: 'pending' | 'paid' | 'failed' | 'refunded';
     order_status: 'pending' | 'confirmed' | 'processing' | 'out_for_delivery' | 'delivered' | 'cancelled';
+    status: string;
+    tracking_id: string | null;
+    estimated_delivery: string | null;
     notes: string | null;
     created_at: string;
     updated_at: string;
@@ -180,4 +188,97 @@ export interface ChatContext {
     products?: Product[];
     categories?: Category[];
     language: 'en' | 'te';
+}
+
+// NEW v2 Types
+
+export interface UserProfile {
+    id: string;
+    full_name: string | null;
+    phone: string | null;
+    avatar_url: string | null;
+    role: 'customer' | 'admin' | 'super_admin';
+    date_of_birth: string | null;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface Address {
+    id: string;
+    user_id: string;
+    label: string;
+    street: string;
+    city: string;
+    district: string;
+    state: string;
+    pincode: string;
+    landmark: string | null;
+    is_default: boolean;
+    created_at: string;
+    updated_at: string;
+}
+
+export interface SubscriptionPlan {
+    id: string;
+    name: string;
+    slug: string;
+    description: string | null;
+    product_id: string | null;
+    frequency: 'weekly' | 'monthly' | 'biweekly';
+    quantity: number;
+    price: number;
+    discount_percent: number;
+    is_active: boolean;
+    image_url: string | null;
+    features: string[];
+    created_at: string;
+}
+
+export interface Subscription {
+    id: string;
+    user_id: string;
+    plan_id: string;
+    address_id: string | null;
+    status: 'active' | 'paused' | 'cancelled' | 'expired';
+    start_date: string;
+    next_delivery_date: string | null;
+    pause_until: string | null;
+    cancelled_at: string | null;
+    payment_method: string;
+    razorpay_subscription_id: string | null;
+    total_deliveries: number;
+    notes: string | null;
+    created_at: string;
+    updated_at: string;
+    // Joined
+    plan?: SubscriptionPlan;
+    address?: Address;
+}
+
+export interface SubscriptionOrder {
+    id: string;
+    subscription_id: string;
+    order_id: string | null;
+    delivery_date: string;
+    status: 'scheduled' | 'delivered' | 'skipped' | 'failed';
+    notes: string | null;
+    created_at: string;
+}
+
+export interface Review {
+    id: string;
+    user_id: string;
+    product_id: string;
+    order_id: string | null;
+    rating: number;
+    title: string | null;
+    content: string;
+    image_urls: string[];
+    is_verified_purchase: boolean;
+    is_approved: boolean;
+    helpful_count: number;
+    created_at: string;
+    updated_at: string;
+    // Joined
+    user_profile?: Pick<UserProfile, 'full_name' | 'avatar_url'>;
 }

@@ -7,7 +7,8 @@ import {
     Package,
     Users,
     IndianRupee,
-    Loader2
+    Loader2,
+    AlertTriangle
 } from 'lucide-react';
 import { createClient } from '@/lib/supabase-client';
 
@@ -28,6 +29,7 @@ export default function AdminDashboard() {
         { title: 'Customers', value: '0', change: '0%', isPositive: true, icon: Users, color: 'bg-orange-500' },
     ]);
     const [recentOrders, setRecentOrders] = useState<{ id: string; customer: string; amount: number; status: string; date: string }[]>([]);
+    const [lowStockProducts, setLowStockProducts] = useState<{ id: string; name: string; stock: number; threshold: number }[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const supabase = createClient();
@@ -55,6 +57,15 @@ export default function AdminDashboard() {
                 // Calculate Stats
                 const totalRevenue = orders?.reduce((sum: number, order: Order) => sum + (parseFloat(String(order.total)) || 0), 0) || 0;
                 const totalOrders = orders?.length || 0;
+
+                // Low Stock Products
+                const lowStock = productsResponse.data?.filter((p: any) => p.stock_quantity <= (p.low_stock_threshold || 10)).map((p: any) => ({
+                    id: p.id,
+                    name: p.name,
+                    stock: p.stock_quantity,
+                    threshold: p.low_stock_threshold || 10
+                })) || [];
+                setLowStockProducts(lowStock);
 
                 // Fetch Unique Customers
                 const uniqueCustomers = new Set(orders?.map((o: Order) => o.user_id).filter(Boolean)).size;
@@ -104,6 +115,27 @@ export default function AdminDashboard() {
 
     return (
         <div className="space-y-8">
+            {/* Low Stock Alerts */}
+            {lowStockProducts.length > 0 && (
+                <div className="bg-red-50 border border-red-200 rounded-2xl p-6">
+                    <div className="flex items-center gap-3 mb-4">
+                        <AlertTriangle className="w-6 h-6 text-red-600" />
+                        <h2 className="text-lg font-heading font-semibold text-red-800">Low Stock Alerts</h2>
+                    </div>
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {lowStockProducts.map(p => (
+                            <div key={p.id} className="bg-white rounded-xl p-4 shadow-sm border border-red-100 flex justify-between items-center">
+                                <div>
+                                    <p className="font-medium text-warm-900 line-clamp-1">{p.name}</p>
+                                    <p className="text-sm text-red-600">Stock: {p.stock} (Threshold: {p.threshold})</p>
+                                </div>
+                                <a href="/admin/products" className="text-sm text-primary-600 hover:underline">Update</a>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
             {/* Stats Grid */}
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {stats.map((stat, index) => (

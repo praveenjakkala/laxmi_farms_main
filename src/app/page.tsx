@@ -517,6 +517,138 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
+      {/* ═══════════════════════════════════════════════ */}
+      {/* SUBSCRIPTION HIGHLIGHT SECTION */}
+      {/* ═══════════════════════════════════════════════ */}
+      <section className="section-container">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-purple-600 via-purple-700 to-primary-700 p-6 sm:p-10 md:p-14 mx-2 sm:mx-0"
+        >
+          <div className="absolute top-0 right-0 w-72 h-72 bg-white/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-56 h-56 bg-purple-300/10 rounded-full blur-2xl" />
+
+          <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
+            <div className="flex-1 text-center md:text-left">
+              <span className="inline-block px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-white text-xs font-semibold mb-3">
+                ✨ NEW: Subscribe & Save
+              </span>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-white mb-3">
+                Never Run Out of<br />Farm Freshness
+              </h2>
+              <p className="text-base text-white/80 mb-5 max-w-md">
+                Set up weekly egg delivery or monthly chicken subscription. Save up to 15% and enjoy hassle-free doorstep delivery.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
+                <Link
+                  href="/dashboard/subscriptions"
+                  className="inline-flex items-center justify-center px-6 py-3 bg-white text-purple-700 font-bold rounded-xl hover:bg-purple-50 transition-colors shadow-lg text-sm"
+                >
+                  View Plans
+                  <ArrowRight className="ml-2 w-4 h-4" />
+                </Link>
+              </div>
+            </div>
+
+            {/* Plan Cards Preview */}
+            <div className="flex gap-3 shrink-0">
+              {[
+                { freq: 'Weekly', item: '30 Desi Eggs', price: '₹450', save: '10%' },
+                { freq: 'Monthly', item: '2kg Country Chicken', price: '₹1,200', save: '15%' },
+              ].map((plan) => (
+                <motion.div
+                  key={plan.freq}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-4 w-36 sm:w-44 text-center"
+                >
+                  <span className="text-xs font-semibold text-purple-200 uppercase tracking-wider">{plan.freq}</span>
+                  <p className="text-white font-bold text-sm mt-1">{plan.item}</p>
+                  <p className="text-2xl font-heading font-bold text-white mt-2">{plan.price}</p>
+                  <span className="inline-block mt-1 px-2 py-0.5 bg-green-400/20 text-green-300 text-xs font-bold rounded-full">
+                    Save {plan.save}
+                  </span>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════ */}
+      {/* TRUST BADGES & SOCIAL PROOF */}
+      {/* ═══════════════════════════════════════════════ */}
+      <section className="section-container">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <div className="text-center mb-8 sm:mb-10">
+            <h2 className="text-2xl sm:text-3xl font-heading font-bold text-primary-600 mb-2">
+              Trusted by Families Across Telangana
+            </h2>
+            <p className="text-warm-500 max-w-xl mx-auto text-sm sm:text-base">
+              We take pride in quality, freshness, and customer satisfaction
+            </p>
+          </div>
+
+          {/* Stats */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mb-8 px-2 sm:px-0">
+            {[
+              { number: '5,000+', label: 'Happy Customers', emoji: '👨‍👩‍👧‍👦' },
+              { number: '50,000+', label: 'Eggs Delivered', emoji: '🥚' },
+              { number: '4.8★', label: 'Customer Rating', emoji: '⭐' },
+              { number: '99%', label: 'On-Time Delivery', emoji: '🚚' },
+            ].map((stat, idx) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className="text-center bg-white rounded-2xl p-5 shadow-card border border-warm-100"
+              >
+                <span className="text-2xl">{stat.emoji}</span>
+                <p className="text-xl sm:text-2xl font-heading font-bold text-primary-600 mt-1">{stat.number}</p>
+                <p className="text-xs text-warm-500 mt-0.5">{stat.label}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Trust Badges */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 px-2 sm:px-0">
+            {[
+              { icon: '🛡️', title: 'FSSAI Certified', desc: 'Food safety guaranteed' },
+              { icon: '🌿', title: '100% Natural', desc: 'No hormones or antibiotics' },
+              { icon: '📦', title: 'Same-Day Delivery', desc: 'Order before 12pm' },
+              { icon: '💯', title: 'Quality Promise', desc: 'Fresh or full refund' },
+            ].map((badge, idx) => (
+              <motion.div
+                key={badge.title}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.08 }}
+                className="flex items-center gap-3 bg-primary-50 rounded-xl p-3 sm:p-4 border border-primary-100"
+              >
+                <span className="text-xl sm:text-2xl shrink-0">{badge.icon}</span>
+                <div>
+                  <p className="text-xs sm:text-sm font-bold text-primary-700">{badge.title}</p>
+                  <p className="text-[10px] sm:text-xs text-primary-500">{badge.desc}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════ */}
+      {/* FINAL CTA */}
+      {/* ═══════════════════════════════════════════════ */}
       <section className="section-container">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -558,3 +690,4 @@ export default function HomePage() {
     </div>
   );
 }
+

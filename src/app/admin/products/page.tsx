@@ -8,7 +8,7 @@ import Button from '@/components/ui/Button';
 import { createClient } from '@/lib/supabase-client';
 
 export default function AdminProductsPage() {
-    const [products, setProducts] = useState<{ id: string; name: string; category: string; price: number; stock: number; image_url?: string; unit?: string }[]>([]);
+    const [products, setProducts] = useState<{ id: string; name: string; category: string; price: number; stock_quantity: number; image_url?: string; unit?: string }[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const [showAddModal, setShowAddModal] = useState(false);
@@ -19,7 +19,7 @@ export default function AdminProductsPage() {
         name: '',
         category: 'Country Chicken',
         price: '',
-        stock: '',
+        stock_quantity: '',
         description: '',
         unit: 'kg', // or 'bird', 'pack'
         image_url: ''
@@ -86,12 +86,12 @@ export default function AdminProductsPage() {
                     slug: newProduct.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, ''),
                     category: newProduct.category,
                     price: parseFloat(newProduct.price),
-                    stock: parseInt(newProduct.stock),
+                    stock_quantity: parseInt(newProduct.stock_quantity),
                     description: newProduct.description,
                     unit: newProduct.unit,
                     image_url: imageUrl,
-                    status: parseInt(newProduct.stock) > 0 ? 'active' : 'out_of_stock',
-                    is_available: parseInt(newProduct.stock) > 0
+                    status: parseInt(newProduct.stock_quantity) > 0 ? 'active' : 'out_of_stock',
+                    is_available: parseInt(newProduct.stock_quantity) > 0
                 });
 
             if (error) throw error;
@@ -101,7 +101,7 @@ export default function AdminProductsPage() {
                 name: '',
                 category: 'Country Chicken',
                 price: '',
-                stock: '',
+                stock_quantity: '',
                 description: '',
                 unit: 'kg',
                 image_url: ''
@@ -202,13 +202,13 @@ export default function AdminProductsPage() {
                                         </td>
                                         <td className="px-6 py-4 text-sm text-warm-600">{product.category}</td>
                                         <td className="px-6 py-4 text-sm font-medium text-warm-900">₹{product.price}/{product.unit || 'kg'}</td>
-                                        <td className="px-6 py-4 text-sm text-warm-600">{product.stock}</td>
+                                        <td className="px-6 py-4 text-sm text-warm-600">{product.stock_quantity}</td>
                                         <td className="px-6 py-4">
-                                            <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${product.stock > 0
+                                            <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${product.stock_quantity > 0
                                                 ? 'bg-green-100 text-green-800'
                                                 : 'bg-red-100 text-red-800'
                                                 }`}>
-                                                {product.stock > 0 ? 'Active' : 'Out of Stock'}
+                                                {product.stock_quantity > 0 ? 'Active' : 'Out of Stock'}
                                             </span>
                                         </td>
                                         <td className="px-6 py-4">
@@ -305,8 +305,8 @@ export default function AdminProductsPage() {
                                             required
                                             className="input-field"
                                             placeholder="50"
-                                            value={newProduct.stock}
-                                            onChange={e => setNewProduct({ ...newProduct, stock: e.target.value })}
+                                            value={newProduct.stock_quantity}
+                                            onChange={e => setNewProduct({ ...newProduct, stock_quantity: e.target.value })}
                                         />
                                     </div>
                                 </div>
