@@ -5,6 +5,7 @@ import Footer from "@/components/ui/Footer";
 import CartDrawer from "@/components/ui/CartDrawer";
 import AIAssistant from "@/components/ui/AIAssistant";
 import WhatsAppButton from "@/components/ui/WhatsAppButton";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   title: {
@@ -135,6 +136,7 @@ export default function RootLayout({
         <CartDrawer />
         <AIAssistant />
         <WhatsAppButton />
+        <SpeedInsights />
       </body>
     </html>
   );
